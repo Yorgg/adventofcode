@@ -1,1 +1,1 @@
-** my solutions to the adventofcode challenges (in javascript)
+My solutions to the adventofcode challenges http://adventofcode.com/ 

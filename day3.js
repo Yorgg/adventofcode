@@ -3,33 +3,31 @@
 
 // Part 1
 // Note: this function does not build a spiral array, 
-// but derives the distance from the edge position (outer square) of input
+// but derives the distance from the edge position (edge-square) of input
 // and the # of sub-squares. 
 
 function distance(input) {
-  const squareEndVals = input => { 
-    let array = [1];
-    let n = 1;
-    while(n*n < input) { n+=2; array = [...array, n*n]; }
-    return array;
+  const edgeSquare = input => { 
+    let subSquareCount = 0, n = 1, lastVal = 0
+    while(n*n < input) { n+=2; lastVal = n*n; subSquareCount++ }
+    return { lastVal, subSquareCount };
   }
 
-  const distanceFromEdgeToInnerSquare = squares => squares.length-1;
-
-  const distanceToEdgeCenter = (squares, input) => {
+  const distanceFromEdgeToEdgeCenter = ({ subSquareCount, lastVal }, input) => {
     const intervals = [0,1,2,3,4,5,6,7].map(n => {
-      const half = squares.length-1;
-      const last = squares[half];
-      const out = [last - half*(n+1), last - half*n];
+      const out = [lastVal - subSquareCount*(n+1), lastVal - subSquareCount*n];
       return([...out, n%2===0 ? out[0] : out[1]]);
     })
     const edgeCenter = intervals.find(a => input >= a[0] && input <= a[1])[2]
     return Math.abs(edgeCenter-input)
   }
 
-  const squares = squareEndVals(input)
-  return(distanceToEdgeCenter(squares,input) + distanceFromEdgeToInnerSquare(squares))
+  const edgeSquareVals = edgeSquare(input);
+  return distanceFromEdgeToEdgeCenter(edgeSquareVals, input) + edgeSquareVals.subSquareCount
 }
 
 // Answer
-distance(312051)  //=> 430
+distance(312051)  // => 430
+
+// Big number
+distance(999999999999) // => 999992

@@ -15,7 +15,7 @@ def parse_weight(str)
 end
 
 def descendants(towers_with_nodes)
-  descendants = towers_with_nodes.reduce([]) do |towers, str| 
+  towers_with_nodes.reduce([]) do |towers, str| 
     towers.concat(parse_nodes(str))
   end 
 end
